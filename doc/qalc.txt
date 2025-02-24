@@ -1,0 +1,95 @@
+==============================================================================
+ QALC Plugin for Vim                           QALC Vim Plugin Documentation
+==============================================================================
+                                                                *qalc-plugin*
+
+This help file describes the QALC plugin for Vim. It allows you to quickly
+calculate expressions directly within your text files using the external
+program "qalc" (from the Qalculate! project).
+
+Overview:                                                   *qalc-overview*
+==========
+The QALC plugin lets you type or visually select a mathematical expression,
+such as "1 + 2", and then calculate its result by pressing a configured
+mapping. By default, the mappings are:
+    - "q+" to append the result (adding " = result" after the expression)
+    - "q=" to replace the expression with its result.
+
+The plugin is particularly useful for dynamically recalculating numbers
+in code or markdown documents. No need to open a separate calculator or retype
+expressions – simply invoke the plugin and let it update your file for you.
+
+When you have an expression like:
+     1+2
+and you type "q++", the line becomes:
+     1+2 = 3
+
+In replacement mode (using "q=="), the entire line's expression is replaced
+with just the result, e.g., "3".
+
+The plugin also respects Vim's 'commentstring' setting. This means if your
+expression is within a commented line (for example, "// 1+2"), QALC will
+temporarily remove the comment markers while calculating the expression, and
+then reapply them afterward. Any previously calculated result will be removed
+and replaced with a fresh calculation.
+
+By default, results are shown with 2 decimal places. You can modify this and
+other parameters using the variable g:qalc_parameters. The plugin also supports
+splitting lines at defined punctuation (such as "|", ";", or tabs) via the
+g:qalc_splits setting so that you can calculate multiple expressions on one line.
+
+------------------------------------------------------------------------------
+1. REQUIREMENTS & SETUP                                    *qalc-requirements*
+------------------------------------------------------------------------------
+- Requires Vim version 7.4 or later.
+- Requires the "qalc" command to be installed and available in your PATH.
+
+To install, copy the file (qalc.vim) into your ~/.vim/ftplugin/ directory or
+wherever you store your filetype plugins. Typically, the file is named "qalc.vim".
+
+------------------------------------------------------------------------------
+2. USAGE                                                *qalc-usage*
+------------------------------------------------------------------------------
+The default key mappings are:
+
+   Normal Mode:
+     nmap q=   → Replace the expression(s) with their calculated result.
+     nmap q+   → Append " = result" to each expression.
+
+   Visual Mode:
+     xmap q=   → Same as above, but for visually selected text.
+     xmap q+   → Same as above, but for visually selected text.
+
+You can also double these mappings (e.g. "q++" or "q==") to apply the
+operation to an entire line as a text-object in Normal mode.
+
+If you prefer not to use these default mappings, disable them by adding:
+    let g:qalc_no_mappings = 1
+to your vimrc. You can then map your own shortcuts to the following commands:
+
+    <Plug>(QalcReplace)  - For replacement mode.
+    <Plug>(QalcAppend)   - For append mode.
+
+------------------------------------------------------------------------------
+3. CUSTOMIZATION                                        *qalc-customization*
+------------------------------------------------------------------------------
+You can further customize the plugin behavior:
+
+- To override the default qalc arguments (e.g., to change decimal precision):
+
+      let g:qalc_parameters = '--set "min decimals 0" --set "max decimals 2"'
+
+- To define which characters should split multiple expressions on the same line,
+      let g:qalc_splits = ['|', ';', "\t"]
+  Each entry is an highly unmagic (|\V|) regular expression used for matching
+  and replacing in which only the backslash \ needs escaping.
+
+- To disable the default mappings so you can set custom key bindings:
+      let g:qalc_no_mappings = 1
+  Then, in your vimrc, you might add:
+      nnoremap <silent> <Leader>+ <Plug>(QalcAppend)
+      xnoremap <silent> <Leader>+ <Plug>(QalcAppend)
+      nnoremap <silent> <Leader>= <Plug>(QalcReplace)
+      xnoremap <silent> <Leader>= <Plug>(QalcReplace)
+
+vim: set ft=help:
