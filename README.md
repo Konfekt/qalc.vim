@@ -1,11 +1,9 @@
 # QALC Plugin for Vim
 
-This Vim plugin lets you quickly calculate expressions inside your text by calling the external program **qalc** (from the Qalculate!
-project). You can type or visually select an expression like `1 + 2`, press the configured mappings (by default, `q+` for appending or `q=` for replacing), and the plugin will either insert or replace the expression's result right there in your file.
+This Vim plugin lets you quickly calculate expressions inside your text by calling the external program **qalc** (from the [Qalculate!](http://qalculate.github.io/) project).
+You can select an expression like `1 + 2`, press the configured mappings (by default, `q+` for appending or `q=` for replacing), and the plugin will either append or replace the expression's result right there in your file.
 
 ![Qalc.vim in Action](https://i.imgur.com/fbvmOcr.gif)
-
-It is especially handy for repeated re-calculations of numbers in code or markdown documents—you don't have to open a separate calculator or worry about retyping expressions.
 
 For example, if you have a line with `1+2`, pressing `q++` turns it into:
 
@@ -41,11 +39,10 @@ If there was already a result, it will be removed and replaced with a fresh calc
 
 By default, the plugin shows results with 2 decimal places, but you can configure different parameters or decimal precision by changing `g:qalc_parameters`.
 
-## Requirements & Setup
+## Requirements
 
 - **Vim 7.4** or later.
 - The [`qalc`](https://github.com/Qalculate/qalculate-gtk) command must be installed and available in your PATH.
-- To enable, copy the file (`qalc.vim`) into your `~/.vim/ftplugin/` directory (or wherever you store your filetype plugins). Typically, the file is named `qalc.vim`.
 
 ## Usage
 
