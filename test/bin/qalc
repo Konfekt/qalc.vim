@@ -1,0 +1,13 @@
+#!/bin/sh
+# Stand-in for qalc(1): evaluates plain arithmetic with awk and knows a few
+# fixed expressions. Logs its arguments to $QALC_LOG if set.
+for arg; do expr=$arg; done
+[ -n "$QALC_LOG" ] && printf '%s\n' "$*" >>"$QALC_LOG"
+expr=$(printf '%s' "$expr" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+case $expr in
+  'fail '*) exit 1 ;;
+  '1 ohm') echo '1 Ω' ;;
+  '100 C') echo '100 °C' ;;
+  *[!0-9.+*/\ \(\)-]*) echo "$expr" ;;
+  *) awk "BEGIN { print $expr }" ;;
+esac

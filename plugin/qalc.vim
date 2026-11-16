@@ -1,21 +1,10 @@
-"  Put into ~/.vim/ftplugin/qalc.vim to use q+ for calculation of text-objects
-"  or selections. For example, q++ on the line `1+2` turns it into `1+2 = 3`.
-
-"  Should work with Vim 7.4 or later.
-
-"  Respects the 'commentstring' option, so that q+ works with comments.
-"  Recomputes the result in case there's already one.
-
-"  Pass arguments to it by setting `g:qalc_parameters`, by default 
-"  restricting output to have 2 decimal places.
+" Calculate text objects and selections with qalc(1) of Qalculate!, see
+" :help qalc. For example, q++ on the line `1+2` turns it into `1+2 = 3`.
 
 if &compatible || exists('g:loaded_qalc') | finish | endif
 let g:loaded_qalc = 1
 
-if !executable('qalc')
-  " echohl WarningMsg | echomsg 'qalc(1) is not found in $PATH' | echohl NONE
-  finish
-endif
+if !executable('qalc') | finish | endif
 
 if !exists('g:qalc_parameters')
   let g:qalc_parameters = '--set "min decimals 0" --set "max decimals 2"'
