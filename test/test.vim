@@ -34,6 +34,26 @@ function! s:test_recompute() abort
   call s:check('recompute result', s:run(['1+2 = 7'], 'q++'), ['1+2 = 3'])
 endfunction
 
+" A comparison is not mistaken for a previous result.
+function! s:test_comparison() abort
+  call s:check('comparison append', s:run(['2 >= 1'], 'q++'), ['2 >= 1 = true'])
+  call s:check('comparison recompute', s:run(['1 != 2 = false'], 'q++'), ['1 != 2 = true'])
+  call s:check('equality recompute', s:run(['2 == 2 = 0'], 'q++'), ['2 == 2 = true'])
+endfunction
+
+" Text without a calculation is not changed, so the buffer stays unmodified.
+function! s:test_unchanged_not_modified() abort
+  enew!
+  setlocal buftype= commentstring=
+  call setline(1, ['no numbers here', '1+2 = 3'])
+  setlocal nomodified
+  execute 'normal q++'
+  call s:check('unchanged: not modified', &modified, 0)
+  execute 'normal jq++'
+  call s:check('unchanged result: not modified', [getline(2), &modified], ['1+2 = 3', 0])
+  setlocal nomodified
+endfunction
+
 function! s:test_table() abort
   call s:check('table append', s:run(['| 1+2 | 2*3 |'], 'q++'), ['| 1+2 = 3 | 2*3 = 6 |'])
   call s:check('table replace', s:run(['| 1+2 | 2*3 |'], 'q=='), ['| 3   | 6   |'])

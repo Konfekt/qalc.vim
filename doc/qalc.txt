@@ -29,7 +29,8 @@ result, "3", padded with spaces to the width of the expression.
 The plugin respects 'commentstring'. If the expression is within a commented
 line (for example, "// 1+2"), the comment markers are removed while the
 expression is calculated, and put back afterwards. Any previously calculated
-result (the text after "=") is removed and replaced by a fresh calculation.
+result (the text after an "=" that is not part of a comparison such as "==",
+"!=", "<=" or ">=") is removed and replaced by a fresh calculation.
 
 By default, results are shown with at most 2 decimal places; change this by
 |g:qalc_parameters|. Lines can hold multiple expressions separated by "|",
