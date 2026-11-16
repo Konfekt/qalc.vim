@@ -34,14 +34,14 @@ respectively after hitting `q+ip`
 ```
 
 The plugin also respects the existing `commentstring` setting.
-That means if your expression is inside a commented line, the plugin will temporarily remove the comment markers, calculate the expression, and then reapply the comment markers if needed.
+That means if your expression is inside a commented line, the plugin will temporarily remove the comment markers (and the indentation before them), calculate the expression, and then put them back.
 If there was already a result, it will be removed and replaced with a fresh calculation.
 
 By default, the plugin shows results with 2 decimal places, but you can configure different parameters or decimal precision by changing `g:qalc_parameters`.
 
 ## Requirements
 
-- **Vim 7.4** or later.
+- Vim 8.2.0924 or later, or Neovim 0.5 or later.
 - The [`qalc`](https://github.com/Qalculate/qalculate-gtk) command must be installed and available in your PATH.
 
 ## Usage
@@ -75,7 +75,8 @@ Doubling these mappings (e.g. `q++` or `q==`) applies to an entire line as a tex
   let g:qalc_splits = ['|', ';', "\t"]
   ```
 
-    Each entry is an highly unmagic (`:help \V`) regular expression used for matching and replacing in which only the backslash \ needs escaping.
+    Each entry is a very nomagic (`:help \V`) regular expression in which only the backslash `\` needs escaping.
+    The first entry that matches a line splits it, and the matched text is kept between the results.
 
 - **Disable default mappings:**
 
@@ -86,8 +87,15 @@ Doubling these mappings (e.g. `q++` or `q==`) applies to an entire line as a tex
     Then you can manually map the plugin:
 
     ```vim
-    nnoremap <silent> <Leader>+ <Plug>(QalcAppend)
-    xnoremap <silent> <Leader>+ <Plug>(QalcAppend)
-    nnoremap <silent> <Leader>= <Plug>(QalcReplace)
-    xnoremap <silent> <Leader>= <Plug>(QalcReplace)
+    nmap <Leader>+ <Plug>(QalcAppend)
+    xmap <Leader>+ <Plug>(QalcAppend)
+    nmap <Leader>= <Plug>(QalcReplace)
+    xmap <Leader>= <Plug>(QalcReplace)
     ```
+
+    `<Plug>` mappings only work with `nmap`/`xmap`, not with `nnoremap`/`xnoremap`.
+
+## Tests
+
+Run `test/run.sh` to test in headless Vim and Neovim.
+It uses a stand-in for `qalc` in `test/bin`; set `QALC_REAL=1` to use the real `qalc` in your `PATH` instead.
