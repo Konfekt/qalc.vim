@@ -8,6 +8,7 @@ case $expr in
   'fail '*) exit 1 ;;
   '1 ohm') echo '1 Ω' ;;
   '100 C') echo '100 °C' ;;
+  '2 >= 1' | '1 != 2' | '2 == 2') echo 'true' ;;
   *[!0-9.+*/\ \(\)-]*) echo "$expr" ;;
   *) awk "BEGIN { print $expr }" ;;
 esac

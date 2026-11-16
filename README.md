@@ -20,24 +20,24 @@ It also allows you to split lines at certain punctuation (like `|`, `;`, or tabs
 becomes after hitting `q=ip` and realigning (say, with vim-table-mode)
 
 ```
-| 90.07 EUR          | 2.54 cm | 8.05 km  |
-| 1.00 + 2.00i       | 5.00    | 1.05     |
-| 2.00 h + 30.00 min | 0.50 MB | 3.16E7 s |
+| 90.07 EUR    | 2.54 cm | 8.05 km    |
+| 1 + 2i       | 5       | 1.05       |
+| 2 h + 30 min | 0.5 MB  | 31557600 s |
 ```
 
-respectively after hitting `q+ip`
+respectively after hitting `q+ip` (and realigning)
 
 ```
-| 100 USD to EUR = 90.07 EUR                | 1 inch to cm = 2.54 cm | 5 mi to km = 8.05 km         |
-| 1 + 2i * 3 - 4i = 1.00 + 2.00i            | abs(3 + 4i) = 5.00     | arg(1 + sqrt(3) * i) = 1.05  |
-| 2 hours + 30 minutes = 2.00 h + 30.00 min | 500 kB to MB = 0.50 MB | 1 year to seconds = 3.16E7 s |
+| 100 USD to EUR = 90.07 EUR          | 1 inch to cm = 2.54 cm | 5 mi to km = 8.05 km           |
+| 1 + 2i * 3 - 4i = 1 + 2i            | abs(3 + 4i) = 5        | arg(1 + sqrt(3) * i) = 1.05    |
+| 2 hours + 30 minutes = 2 h + 30 min | 500 kB to MB = 0.5 MB  | 1 year to seconds = 31557600 s |
 ```
 
 The plugin also respects the existing `commentstring` setting.
 That means if your expression is inside a commented line, the plugin will temporarily remove the comment markers (and the indentation before them), calculate the expression, and then put them back.
-If there was already a result, it will be removed and replaced with a fresh calculation.
+If there was already a result (the text after an `=` that is not part of a comparison such as `==`, `!=`, `<=` or `>=`), it will be removed and replaced with a fresh calculation.
 
-By default, the plugin shows results with 2 decimal places, but you can configure different parameters or decimal precision by changing `g:qalc_parameters`.
+By default, the plugin shows results with at most 2 decimal places, but you can configure different parameters or decimal precision by changing `g:qalc_parameters`.
 
 ## Requirements
 

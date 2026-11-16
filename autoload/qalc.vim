@@ -54,9 +54,12 @@ function! s:uncomment(line) abort
   return [prefix, strpart(rest, 0, len(rest) - len(suffix)), suffix]
 endfunction
 
+" Remove a result appended as ' = result', that is, everything from the first
+" '=' that is part neither of a comparison (==, !=, <=, >=) nor of ':='.
 function! s:remove_result(term) abort
-  return match(a:term, '=') > 0 ?
-        \ substitute(a:term, '\s*=.*$', '', '') .. matchstr(a:term, '\s*$') :
+  let pos = match(a:term, '[=!<>:]\@<!==\@!')
+  return pos > 0 ?
+        \ substitute(strpart(a:term, 0, pos), '\s*$', '', '') .. matchstr(a:term, '\s*$') :
         \ a:term
 endfunction
 
@@ -102,8 +105,9 @@ function! s:edit_selection(type, append) abort
   try
     set selection=inclusive clipboard-=unnamed clipboard-=unnamedplus virtualedit=block
     let lines = s:get_selection(a:type)
-    let results = map(lines, {_, line -> s:qalc(line, a:append)})
-    if join(results, '') !=# ''
+    let results = map(copy(lines), {_, line -> s:qalc(line, a:append)})
+    " Leave the buffer (and its undo history) alone if nothing changes.
+    if results !=# lines
       call setreg('"', results, getregtype('"')[0])
       normal! gvp
     endif
